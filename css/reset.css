@@ -1,0 +1,47 @@
+/*** RESET ***/
+* {margin:0; padding:0; border:0; outline:0; font-size:100%; vertical-align:baseline; background:transparent;
+font-weight:normal;}
+article, aside, figure, footer, header, hgroup, nav, section {display:block;}
+nav ul {list-style:none;}
+blockquote, q {quotes:none;}
+blockquote:before, blockquote:after, q:before, q:after {content:''; content:none;}
+a {margin:0; padding:0; font-size:100%; vertical-align:baseline; background:transparent; text-decoration:none; color:#ffffff;}
+ins {background-color:#ff9; color:#000; text-decoration:none;}
+mark {background-color:#ff9; color:#000; font-style:italic; font-weight:normal;}
+del {text-decoration: line-through;}
+abbr[title], dfn[title] {border-bottom:1px dotted #000; cursor:help;}
+table {border-collapse:collapse; border-spacing:0;}
+hr {display:block; height:1px; border:0; border-top:1px solid #ccc; margin:1em 0; padding:0;}
+input, select {vertical-align:middle;}
+table {font-size:inherit; font:100%;}
+select, input, textarea {font:99% sans-serif;}
+pre, code, kbd, samp {font-family: monospace, sans-serif;}
+body, select, input, textarea {color:#000;}
+h1, h2, h3, h4, h5, h6, p {font-weight:normal;}
+html {-webkit-font-smoothing: antialiased;}
+a:hover, a:active {outline: none;}
+ul {}
+li {list-style: none none outside;}
+ol {list-style-type:decimal;}
+small {font-size:85%;}
+td, td img {vertical-align:top;}
+sub {vertical-align:sub; font-size: smaller;}
+sup {vertical-align: super; font-size: smaller;}
+pre {padding:15px; white-space: pre; white-space: pre-wrap; white-space: pre-line; word-wrap: break-word;}
+input[type="radio"] {vertical-align: text-bottom;}
+input[type="checkbox"] {vertical-align: bottom; *vertical-align: baseline;}
+label, input[type=button], input[type=submit], button {cursor: pointer;}
+::-moz-selection {background-color:#cccccc;}
+::selection {background-color:#cccccc;}
+a:link {-webkit-tap-highlight-color: #c3c3c3;}
+a img {border: none;}
+html {height:100%;}
+button {width: auto; overflow: visible;}
+.ie7 img {-ms-interpolation-mode: bicubic;}
+.ir {display:block; text-indent:-999em; overflow:hidden; background-repeat: no-repeat;}
+input,input:focus,input:active,input:hover {border:none; outline:none;}
+a,a:focus,a:active,a:hover {border:none; outline:none;}
+button::-moz-focus-inner,a::-moz-focus-inner,input::-moz-focus-inner {border:0;}
+strong,b {font-weight:normal;font-style:normal;}
+
+a {cursor:pointer;}
