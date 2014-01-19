@@ -55,3 +55,12 @@
   background: #000000;
   color: #ffffff;
   padding: 5px 10px; }
+
+#example video {
+  max-width: 300px;
+  height: auto;
+  float: left; }
+
+.pageWrapper.cheese #example {
+  height: auto;
+  min-height: 100px; }
