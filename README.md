@@ -4,7 +4,7 @@ A very basic QR-code reader based on:
 
 - jQuery: http://jquery.com/
 - Photobooth.js: http://wolframhempel.github.io/photobooth-js/
-- QR-code library: 
+- QR-code library: https://github.com/LazarSoft/jsqrcode
 
 Also tested with mobile browsers (Firefox and Chrome).
 
@@ -12,3 +12,4 @@ Also tested with mobile browsers (Firefox and Chrome).
 Usage:
 Only clone or download this script and test it on your local 
 webserver.
+Enjoy!
