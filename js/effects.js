@@ -7,6 +7,7 @@ $(document).ready(function() {
 		qrCodeDecoder(dataUrl);
 		//console.log(event);
 		//console.log(dataUrl);
+		//console.log($('#example').data( "photobooth" ));
 	});
 
 	$('#button').click(function() {

@@ -13,3 +13,7 @@ Usage:
 Only clone or download this script and test it on your local 
 webserver.
 Enjoy!
+
+
+To-do:
+- setting correct width and height of webcam stream
