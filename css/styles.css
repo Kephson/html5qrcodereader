@@ -67,3 +67,10 @@
 .pageWrapper.cheese #example {
   height: auto;
   min-height: 100px; }
+
+#qrContent p {
+  color: #000000; }
+
+#qrContent p a {
+  color: #000000;
+  text-decoration: underline; }

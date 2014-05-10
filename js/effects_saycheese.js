@@ -2,6 +2,9 @@ var codeFound = false;
 var timer;
 $(document).ready(function() {
 	
+	var test = 'Test 123 www.ephespage.de';
+	console.log(linkify(test));
+
 	var sayCheese = new SayCheese('#example', {audio: false});
 
 	// do nothing on start
@@ -26,7 +29,7 @@ $(document).ready(function() {
 		scanCode(sayCheese);
 		//sayCheese.takeSnapshot();
 	});
-	
+
 	$('#button2').click(function() {
 		$('#example video').remove();
 		sayCheese.start();
@@ -39,14 +42,14 @@ $(document).ready(function() {
 });
 
 // recursive function for scanning code
-function scanCode(snap){
+function scanCode(snap) {
 	snap.takeSnapshot();
-	if(!codeFound){
+	if (!codeFound) {
 		timer = setTimeout(function() {
-		  scanCode(snap);
+			scanCode(snap);
 		}, 1000);
 		//console.log('new scan');
-	}else {
+	} else {
 		clearTimeout(timer);
 		snap.stop();
 		$('#button').hide();
@@ -62,9 +65,25 @@ function qrCodeDecoder(dataUrl) {
 
 // show info from qr code
 function showInfo(data) {
-	$("#qrContent p").text(data);
-	//console.log(data);
-	if(data !== 'error decoding QR Code'){
+	var htmldata = linkify(data);
+	$("#qrContent p").html(htmldata);
+	
+	if (data !== 'error decoding QR Code') {
 		codeFound = true;
 	}
+}
+
+// build an 
+function linkify(text) {
+	if (text) {
+		text = text.replace(/((https?\:\/\/)|(www\.))(\S+)(\w{2,4})(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/gi,function(url) {
+				var full_url = url;
+				if (!full_url.match('^https?:\/\/')) {
+					full_url = 'http://' + full_url;
+				}
+				return '<a href="' + full_url + '" target="blank">' + url + '</a>';
+			}
+		);
+	}
+	return text;
 }
