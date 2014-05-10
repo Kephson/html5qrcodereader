@@ -46,7 +46,7 @@
   height: 30px;
   padding: 20px 0; }
 
-#button {
+#button, #button2 {
   display: inline-block;
   min-width: 100px;
   text-align: center;
@@ -55,6 +55,9 @@
   background: #000000;
   color: #ffffff;
   padding: 5px 10px; }
+
+#button2 {
+  display: none; }
 
 #example video {
   max-width: 300px;

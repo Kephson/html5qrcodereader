@@ -10,8 +10,9 @@
 .photobooth ul,.resizehandle {display:none;}
 
 .button {float:left;clear:both;text-align:center;width:300px;height:30px;padding:20px 0;}
-#button {display:inline-block;min-width:100px;text-align:center;height:20px;line-height:20px;
+#button,#button2 {display:inline-block;min-width:100px;text-align:center;height:20px;line-height:20px;
 background:#000000;color:#ffffff;padding:5px 10px;}
+#button2 {display:none;}
 
 #example video {max-width:300px;height:auto;float:left;}
 .pageWrapper.cheese #example {height:auto;min-height:100px;}
