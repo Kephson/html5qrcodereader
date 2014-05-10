@@ -1,2 +1,3 @@
 10.05.2014:
+- added reload button
 - added link detection for index_saycheese.html
