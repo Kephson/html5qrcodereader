@@ -1,3 +1,6 @@
+18.05.2014:
+- replaced linkify function in effects_saycheese.js with a better detection
+
 10.05.2014:
 - added reload button
 - added link detection for index_saycheese.html
