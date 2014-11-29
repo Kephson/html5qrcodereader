@@ -52,10 +52,8 @@ var SayCheese = (function() {
   };
 
   SayCheese.prototype.off = function off(evt, handler) {
-    this.events = this.events[evt].filter(function(h) {
-      if (h !== handler) {
-        return h;
-      }
+    this.events[evt] = this.events[evt].filter(function(h) {
+      return h !== handler;
     });
   };
 
@@ -186,3 +184,4 @@ var SayCheese = (function() {
   return SayCheese;
 
 })();
+
