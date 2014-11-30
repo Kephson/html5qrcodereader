@@ -5,41 +5,59 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="css/reset.css">
-        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
         
 	<script src="js/jquery.min.js"></script>
+
 	<script src="js/saycheese.js"></script>
 
-	<script type="text/javascript" src="js/qr/grid.js"></script>
-	<script type="text/javascript" src="js/qr/version.js"></script>
-	<script type="text/javascript" src="js/qr/detector.js"></script>
-	<script type="text/javascript" src="js/qr/formatinf.js"></script>
-	<script type="text/javascript" src="js/qr/errorlevel.js"></script>
-	<script type="text/javascript" src="js/qr/bitmat.js"></script>
-	<script type="text/javascript" src="js/qr/datablock.js"></script>
-	<script type="text/javascript" src="js/qr/bmparser.js"></script>
-	<script type="text/javascript" src="js/qr/datamask.js"></script>
-	<script type="text/javascript" src="js/qr/rsdecoder.js"></script>
-	<script type="text/javascript" src="js/qr/gf256poly.js"></script>
-	<script type="text/javascript" src="js/qr/gf256.js"></script>
-	<script type="text/javascript" src="js/qr/decoder.js"></script>
-	<script type="text/javascript" src="js/qr/qrcode.js"></script>
-	<script type="text/javascript" src="js/qr/findpat.js"></script>
-	<script type="text/javascript" src="js/qr/alignpat.js"></script>
-	<script type="text/javascript" src="js/qr/databr.js"></script>
+	<script src="js/qr/grid.js"></script>
+	<script src="js/qr/version.js"></script>
+	<script src="js/qr/detector.js"></script>
+	<script src="js/qr/formatinf.js"></script>
+	<script src="js/qr/errorlevel.js"></script>
+	<script src="js/qr/bitmat.js"></script>
+	<script src="js/qr/datablock.js"></script>
+	<script src="js/qr/bmparser.js"></script>
+	<script src="js/qr/datamask.js"></script>
+	<script src="js/qr/rsdecoder.js"></script>
+	<script src="js/qr/gf256poly.js"></script>
+	<script src="js/qr/gf256.js"></script>
+	<script src="js/qr/decoder.js"></script>
+	<script src="js/qr/qrcode.js"></script>
+	<script src="js/qr/findpat.js"></script>
+	<script src="js/qr/alignpat.js"></script>
+	<script src="js/qr/databr.js"></script>
 
 	<script src="js/effects_saycheese.js"></script>
     </head>
     <body>
-	<div class="pageWrapper cheese">
-		<div class="boxWrapper auto">
-			<div id="example"></div>
+	 <div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Cheese QR</h1>
+				<p class="lead">Minimal QR Code Scanner using saycheese.js and jsqrcode</p>
+			</div>
 		</div>
-		<div class="button">Scanning...</div>
-		<div class="boxWrapper auto">
-			<div id="hiddenImg"></div>
-			<div id="qrContent"><p>No QR Code found yet.</p></div>
+		<div class="row">
+			<div class="col-md-6">
+				<div id="example" class="thumbnail embed-responsive embed-responsive-4by3"></div>
+				<div class="boxWrapper auto">
+					<div id="hiddenImg"></div>
+					<div id="qrContent" class="alert alert-info" role="alert">
+						<p>No QR Code in sight.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+<pre>
+sayCheese.on('success', function() {
+	scanCode(sayCheese);
+});
+
+sayCheese.start();
+</pre>
+			</div>
 		</div>
 	</div>
     </body>

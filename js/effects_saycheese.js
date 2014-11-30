@@ -20,8 +20,7 @@ $(document).ready(function() {
 
 // recursive function for scanning code
 function scanCode(scanner) {
-	scanner.takeSnapshot();
-	
+	scanner.takeSnapshot();	
 	setTimeout(function() {
 		scanCode(scanner);
 	}, 1000);
@@ -37,6 +36,8 @@ function showInfo(data) {
 	if (data !== 'error decoding QR Code') {
 		var htmldata = linkify(data);
 		$("#qrContent p").html(htmldata);
+	} else {
+		$("#qrContent p").html('No QR Code in sight.');
 	}
 }
 

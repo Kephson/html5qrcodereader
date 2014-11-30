@@ -161,6 +161,8 @@ var SayCheese = (function() {
 
       this.element.appendChild(this.video);
       this.video.play();
+
+      this.trigger('success');
     }.bind(this);
 
     /* error is also called when someone denies access */
