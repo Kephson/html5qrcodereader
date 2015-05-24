@@ -1,61 +1,29 @@
-var codeFound = false;
-var timer;
 $(document).ready(function() {
-	
-	var test = 'Test 123 www.ephespage.de';
-	console.log(linkify(test));
+	var scanner = new SayCheese('#example', {audio: false});
 
-	var sayCheese = new SayCheese('#example', {audio: false});
-
-	// do nothing on start
-	sayCheese.on('start', function() {
-		//console.log(this);
-		//this.takeSnapshot();
-	});
-
-	// decode on snapshot
-	sayCheese.on('snapshot', function(snapshot) {
-		//console.log(snapshot);
-		qrCodeDecoder(snapshot.toDataURL());
-	});
-
-	sayCheese.on('error', function(error) {
+	scanner.on('error', function(error) {
 		$('#example').html('<p>Your browser does not support this plugin.</p>');
 	});
 
-	sayCheese.start();
-
-	$('#button').click(function() {
-		scanCode(sayCheese);
-		//sayCheese.takeSnapshot();
-	});
-
-	$('#button2').click(function() {
-		$('#example video').remove();
-		sayCheese.start();
-		$(this).hide();
-		$('#button').show();
+	scanner.on('snapshot', function(snapshot) {
+		qrCodeDecoder(snapshot.toDataURL());
 	});
 
 	qrcode.callback = showInfo;
 
+	scanner.on('success', function() {
+		scanCode(scanner);
+	});
+
+	scanner.start();
 });
 
 // recursive function for scanning code
-function scanCode(snap) {
-	snap.takeSnapshot();
-	if (!codeFound) {
-		timer = setTimeout(function() {
-			scanCode(snap);
-		}, 1000);
-		//console.log('new scan');
-	} else {
-		clearTimeout(timer);
-		snap.stop();
-		$('#button').hide();
-		$('#button2').show();
-		//console.log('stop scan');
-	}
+function scanCode(scanner) {
+	scanner.takeSnapshot();	
+	setTimeout(function() {
+		scanCode(scanner);
+	}, 1000);
 }
 
 // decode the img
@@ -65,11 +33,11 @@ function qrCodeDecoder(dataUrl) {
 
 // show info from qr code
 function showInfo(data) {
-	var htmldata = linkify(data);
-	$("#qrContent p").html(htmldata);
-	
 	if (data !== 'error decoding QR Code') {
-		codeFound = true;
+		var htmldata = linkify(data);
+		$("#qrContent p").html(htmldata);
+	} else {
+		$("#qrContent p").html('No QR Code in sight.');
 	}
 }
 
