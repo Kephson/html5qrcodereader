@@ -16,7 +16,8 @@ Second example (index_saycheese.html) uses saycheese.js to read
 from webcam and the video is correct.
 
 
-Also tested with mobile browsers (Firefox and Chrome).
+Tested with mobile browsers (Firefox and Chrome in newest version).
+Other browsers are not tested!
 
 
 Usage:
