@@ -27,6 +27,11 @@ var SayCheese = (function() {
 
   window.URL = (window.URL ||
                 window.webkitURL);
+                
+  var ERRORS = {
+    NOT_SUPPORTED: 'NOT_SUPPORTED',
+    AUDIO_NOT_SUPPORTED: 'AUDIO_NOT_SUPPORTED'
+  }
 
   SayCheese = function SayCheese(element, options) {
     this.snapshots = [],
@@ -34,12 +39,15 @@ var SayCheese = (function() {
     this.events = {},
     this.stream = null,
     this.options = {
+      videoSource: null,
       snapshots: true,
-      audio: false
+      audio: false,
+      width: 320
     };
 
     this.setOptions(options);
     this.element = document.querySelector(element);
+    console.log('Initialized');
     return this;
   };
 
@@ -58,6 +66,7 @@ var SayCheese = (function() {
   };
 
   SayCheese.prototype.trigger = function trigger(evt, data) {
+	  console.log('triggered!');
     if (this.events.hasOwnProperty(evt) === false) {
       return false;
     }
@@ -83,7 +92,8 @@ var SayCheese = (function() {
   };
 
   SayCheese.prototype.createVideo = function createVideo() {
-    var width     = 320,
+	  console.log('creating video');
+    var width     = this.options.width,
         height    = 0,
         streaming = false;
 
@@ -92,8 +102,8 @@ var SayCheese = (function() {
     this.video.addEventListener('canplay', function() {
       if (!streaming) {
         height = this.video.videoHeight / (this.video.videoWidth / width);
-        this.video.style.width = width;
-        this.video.style.height = height;
+        this.video.width = width;
+        this.video.height = height;
         streaming = true;
         return this.trigger('start');
       }
@@ -134,14 +144,18 @@ var SayCheese = (function() {
 
   /* Start up the stream, if possible */
   SayCheese.prototype.start = function start() {
+	  
+	  console.log('starting say-cheese...');
 
     // fail fast and softly if browser not supported
     if (navigator.getUserMedia === false) {
-      this.trigger('error', 'NOT_SUPPORTED');
+      console.log('failing fast and softly...');
+      this.trigger('error', ERRORS.NOT_SUPPORTED);
       return false;
     }
 
     var success = function success(stream) {
+    	console.log('sucess!');
       this.stream = stream;
       this.createVideo();
 
@@ -155,7 +169,7 @@ var SayCheese = (function() {
         try {
           this.linkAudio();
         } catch(e) {
-          this.trigger('error', 'AUDIO_NOT_SUPPORTED');
+          this.trigger('error', ERRORS.AUDIO_NOT_SUPPORTED);
         }
       }
 
@@ -167,10 +181,17 @@ var SayCheese = (function() {
 
     /* error is also called when someone denies access */
     var error = function error(error) {
+    console.log('access denied');
       this.trigger('error', error);
     }.bind(this);
+    
+    console.log('Getting user media...');
 
-    return navigator.getUserMedia({ video: true, audio: this.options.audio }, success, error);
+    return navigator.getUserMedia({ video: {
+        optional: [{
+            sourceId: this.options.videoSource
+          }]
+        }, audio: this.options.audio }, success, error);
   };
 
   SayCheese.prototype.stop = function stop() {
