@@ -15,21 +15,18 @@ from the webcam, but the width and height of the video is not correct.
 I will correct it in future.
 
 Second example (index_saycheese.html) uses saycheese.js to read 
-from webcam and the video is correct.
+from webcam and the video size is correct. At the moment this is 
+the best working example.
 
 
-Tested with mobile browsers (Firefox and Chrome in newest version).
-Other browsers are not tested!
-
-
-Last tested browser versions with webcam (03/2017):
+Latest tested browser versions with webcam (03/2017):
 - Chrome 56 (Windows 10, 64bit) -> Works
 - Firefox 51.0.1 (Windows 10, 64bit) -> Works
 - Opera 34 (Windows 10, 64bit) -> Works
 - Edge 384 (Windows 10, 64bit) -> No webcam access
 - Internet Explorer 11 (Windows 10, 64bit) -> No webcam access
 - Firefox 51.0.3 (Android 5.1.0) -> Works
-- Chrome 56 (Android 5.1.0) -> Problems with video stream
+- Chrome 56 (Android 5.1.0) -> Problems with video stream, video freezes, only one camera found
 
 
 Examples: 

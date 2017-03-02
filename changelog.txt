@@ -1,5 +1,7 @@
 02.03.2017:
 - updated jQuery to v3.1.1
+- added autoplay option to say cheese
+- minified included scripts
 
 18.05.2014:
 - replaced linkify function in effects_saycheese.js with a better detection

@@ -3,9 +3,9 @@
 
 var videoSelect = document.querySelector('select#videoSource');
 
-var gotSources = function(sourceInfos) {
-	console.log('Detecting user media video sources...');
-	for ( var i = 0; i !== sourceInfos.length; ++i) {
+var gotSources = function (sourceInfos) {
+	//console.log('Detecting user media video sources...');
+	for (var i = 0; i !== sourceInfos.length; ++i) {
 		var sourceInfo = sourceInfos[i];
 		var option = document.createElement('option');
 		option.value = sourceInfo.id;
@@ -13,62 +13,59 @@ var gotSources = function(sourceInfos) {
 			option.text = sourceInfo.label || 'Camera '
 					+ (videoSelect.length);
 			videoSelect.appendChild(option);
-			console.log('Camera Source detected: ' + option.text);
+			//console.log('Camera Source detected: ' + option.text);
 		} else {
-			console.log('Other Source detected: ' + (sourceInfo.label || 'other ' + (videoSelect.length + 1)));
+			//console.log('Other Source detected: ' + (sourceInfo.label || 'other ' + (videoSelect.length + 1)));
 		}
 	}
-}
+};
 
 // detect user media
 if (typeof MediaStreamTrack === 'undefined'
 		|| typeof MediaStreamTrack.getSources === 'undefined') {
-	console
-			.log('This browser does not support MediaStreamTrack.');
+	//console.log('This browser does not support MediaStreamTrack.');
 } else {
-	console.log('MediaStreamTrack supported.');
+	//console.log('MediaStreamTrack supported.');
 	MediaStreamTrack.getSources(gotSources);
 }
 
 var scanner;
 
 function go() {
-	console.log('go!');
-	
-	if(scanner) {
+	//console.log('go!');
+
+	if (scanner) {
 		scanner.stop();
 	}
 
 	scanner = new SayCheese('#example', {
-		snapshots : true,
-		videoSource : videoSelect.value
+		snapshots: true,
+		videoSource: videoSelect.value
 	});
-	
-	scanner.on('error',
-			function(error) {
-				$('#example').html(
-						'<p>This plugin cannot run. Check if your browser blocks it.</p>');
-			});
-	
-	scanner.on('snapshot', function(snapshot) {
+
+	scanner.on('error', function (error) {
+		$('#example').html('<p>This plugin cannot run. Check if your browser blocks it.</p>');
+	});
+
+	scanner.on('snapshot', function (snapshot) {
 		qrCodeDecoder(snapshot.toDataURL());
 	});
-	
+
 	qrcode.callback = showInfo;
-	
-	scanner.on('success', function() {
+
+	scanner.on('success', function () {
 		scanCode(scanner);
 	});
-	
-	console.log('starting scanner...');
+
+	//console.log('starting scanner...');
 	scanner.start();
 }
 
 // recursive function for scanning code
 function scanCode(scanner) {
-	console.log('taking snapshot...');
+	//console.log('taking snapshot...');
 	scanner.takeSnapshot();
-	setTimeout(function() {
+	setTimeout(function () {
 		scanCode(scanner);
 	}, 1000);
 }
@@ -82,9 +79,13 @@ function qrCodeDecoder(dataUrl) {
 function showInfo(data) {
 	if (data !== 'error decoding QR Code') {
 		var htmldata = linkify(data);
+		$("#qrContent").addClass('hasContent');
 		$("#qrContent p").html(htmldata);
 	} else {
-		$("#qrContent p").html('No QR Code in sight.');
+		if ($("#qrContent").hasClass('hasContent')) {
+		} else {
+			$("#qrContent p").html('No QR Code in sight.');
+		}
 	}
 }
 

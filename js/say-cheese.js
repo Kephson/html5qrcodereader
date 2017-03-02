@@ -10,201 +10,204 @@
  *
  * Depends on video and canvas, and of course, getUserMedia. It's unlikely to work
  * on anything but the newest browsers.
+ * 
+ * Small updates: 02.03.2017
  */
 
-var SayCheese = (function() {
+var SayCheese = (function () {
 
-  var SayCheese;
+	var SayCheese;
 
-  navigator.getUserMedia = (navigator.getUserMedia ||
-                            navigator.webkitGetUserMedia ||
-                            navigator.mozGetUserMedia ||
-                            navigator.msGetUserMedia ||
-                            false);
+	navigator.getUserMedia = (navigator.getUserMedia ||
+			navigator.webkitGetUserMedia ||
+			navigator.mozGetUserMedia ||
+			navigator.msGetUserMedia ||
+			false);
 
-  window.AudioContext = (window.AudioContext ||
-                         window.webkitAudioContext);
+	window.AudioContext = (window.AudioContext ||
+			window.webkitAudioContext);
 
-  window.URL = (window.URL ||
-                window.webkitURL);
-                
-  var ERRORS = {
-    NOT_SUPPORTED: 'NOT_SUPPORTED',
-    AUDIO_NOT_SUPPORTED: 'AUDIO_NOT_SUPPORTED'
-  }
+	window.URL = (window.URL ||
+			window.webkitURL);
 
-  SayCheese = function SayCheese(element, options) {
-    this.snapshots = [],
-    this.video = null,
-    this.events = {},
-    this.stream = null,
-    this.options = {
-      videoSource: null,
-      snapshots: true,
-      audio: false,
-      width: 320
-    };
+	var ERRORS = {
+		NOT_SUPPORTED: 'NOT_SUPPORTED',
+		AUDIO_NOT_SUPPORTED: 'AUDIO_NOT_SUPPORTED'
+	};
 
-    this.setOptions(options);
-    this.element = document.querySelector(element);
-    console.log('Initialized');
-    return this;
-  };
+	SayCheese = function SayCheese(element, options) {
+		this.snapshots = [],
+				this.video = null,
+				this.events = {},
+				this.stream = null,
+				this.options = {
+					videoSource: null,
+					snapshots: true,
+					audio: false,
+					width: 320
+				};
 
-  SayCheese.prototype.on = function on(evt, handler) {
-    if (this.events.hasOwnProperty(evt) === false) {
-      this.events[evt] = [];
-    }
+		this.setOptions(options);
+		this.element = document.querySelector(element);
+		//console.log('Initialized');
+		return this;
+	};
 
-    this.events[evt].push(handler)
-  };
+	SayCheese.prototype.on = function on(evt, handler) {
+		if (this.events.hasOwnProperty(evt) === false) {
+			this.events[evt] = [];
+		}
 
-  SayCheese.prototype.off = function off(evt, handler) {
-    this.events[evt] = this.events[evt].filter(function(h) {
-      return h !== handler;
-    });
-  };
+		this.events[evt].push(handler);
+	};
 
-  SayCheese.prototype.trigger = function trigger(evt, data) {
-	  console.log('triggered!');
-    if (this.events.hasOwnProperty(evt) === false) {
-      return false;
-    }
+	SayCheese.prototype.off = function off(evt, handler) {
+		this.events[evt] = this.events[evt].filter(function (h) {
+			return h !== handler;
+		});
+	};
 
-    this.events[evt].forEach(function(handler) {
-      handler.call(this, data);
-    }.bind(this));
-  };
+	SayCheese.prototype.trigger = function trigger(evt, data) {
+		//console.log('triggered!');
+		if (this.events.hasOwnProperty(evt) === false) {
+			return false;
+		}
 
-  SayCheese.prototype.setOptions = function setOptions(options) {
-    // just use naïve, shallow cloning
-    for (var opt in options) {
-      this.options[opt] = options[opt];
-    }
-  }
+		this.events[evt].forEach(function (handler) {
+			handler.call(this, data);
+		}.bind(this));
+	};
 
-  SayCheese.prototype.getStreamUrl = function getStreamUrl() {
-    if (window.URL && window.URL.createObjectURL) {
-      return window.URL.createObjectURL(this.stream);
-    } else {
-      return this.stream;
-    }
-  };
+	SayCheese.prototype.setOptions = function setOptions(options) {
+		// just use naïve, shallow cloning
+		for (var opt in options) {
+			this.options[opt] = options[opt];
+		}
+	};
 
-  SayCheese.prototype.createVideo = function createVideo() {
-	  console.log('creating video');
-    var width     = this.options.width,
-        height    = 0,
-        streaming = false;
+	SayCheese.prototype.getStreamUrl = function getStreamUrl() {
+		if (window.URL && window.URL.createObjectURL) {
+			return window.URL.createObjectURL(this.stream);
+		} else {
+			return this.stream;
+		}
+	};
 
-    this.video = document.createElement('video');
+	SayCheese.prototype.createVideo = function createVideo() {
+		//console.log('creating video');
+		var width = this.options.width,
+				height = 0,
+				streaming = false;
 
-    this.video.addEventListener('canplay', function() {
-      if (!streaming) {
-        height = this.video.videoHeight / (this.video.videoWidth / width);
-        this.video.width = width;
-        this.video.height = height;
-        streaming = true;
-        return this.trigger('start');
-      }
-    }.bind(this), false);
-  };
+		this.video = document.createElement('video');
 
-  SayCheese.prototype.linkAudio = function linkAudio() {
-    this.audioCtx = new window.AudioContext();
-    this.audioStream = this.audioCtx.createMediaStreamSource(this.stream);
+		this.video.addEventListener('canplay', function () {
+			if (!streaming) {
+				height = this.video.videoHeight / (this.video.videoWidth / width);
+				this.video.width = width;
+				this.video.height = height;
+				this.video.setAttribute('autoplay','');
+				streaming = true;
+				return this.trigger('start');
+			}
+		}.bind(this), false);
+	};
 
-    var biquadFilter = this.audioCtx.createBiquadFilter();
+	SayCheese.prototype.linkAudio = function linkAudio() {
+		this.audioCtx = new window.AudioContext();
+		this.audioStream = this.audioCtx.createMediaStreamSource(this.stream);
 
-    this.audioStream.connect(biquadFilter);
-    biquadFilter.connect(this.audioCtx.destination);
-  };
+		var biquadFilter = this.audioCtx.createBiquadFilter();
 
-  SayCheese.prototype.takeSnapshot = function takeSnapshot(width, height) {
-    if (this.options.snapshots === false) {
-      return false;
-    }
+		this.audioStream.connect(biquadFilter);
+		biquadFilter.connect(this.audioCtx.destination);
+	};
 
-    width  = width || this.video.videoWidth;
-    height = height || this.video.videoHeight;
+	SayCheese.prototype.takeSnapshot = function takeSnapshot(width, height) {
+		if (this.options.snapshots === false) {
+			return false;
+		}
 
-    var snapshot = document.createElement('canvas'),
-        ctx      = snapshot.getContext('2d');
+		width = width || this.video.videoWidth;
+		height = height || this.video.videoHeight;
 
-    snapshot.width  = width;
-    snapshot.height = height;
+		var snapshot = document.createElement('canvas'),
+				ctx = snapshot.getContext('2d');
 
-    ctx.drawImage(this.video, 0, 0, width, height);
+		snapshot.width = width;
+		snapshot.height = height;
 
-    this.snapshots.push(snapshot);
-    this.trigger('snapshot', snapshot);
+		ctx.drawImage(this.video, 0, 0, width, height);
 
-    ctx = null;
-  };
+		this.snapshots.push(snapshot);
+		this.trigger('snapshot', snapshot);
 
-  /* Start up the stream, if possible */
-  SayCheese.prototype.start = function start() {
-	  
-	  console.log('starting say-cheese...');
+		ctx = null;
+	};
 
-    // fail fast and softly if browser not supported
-    if (navigator.getUserMedia === false) {
-      console.log('failing fast and softly...');
-      this.trigger('error', ERRORS.NOT_SUPPORTED);
-      return false;
-    }
+	/* Start up the stream, if possible */
+	SayCheese.prototype.start = function start() {
 
-    var success = function success(stream) {
-    	console.log('sucess!');
-      this.stream = stream;
-      this.createVideo();
+		//console.log('starting say-cheese...');
 
-      if (navigator.mozGetUserMedia) {
-        this.video.mozSrcObject = stream;
-      } else {
-        this.video.src = this.getStreamUrl();
-      }
+		// fail fast and softly if browser not supported
+		if (navigator.getUserMedia === false) {
+			//console.log('failing fast and softly...');
+			this.trigger('error', ERRORS.NOT_SUPPORTED);
+			return false;
+		}
 
-      if (this.options.audio === true) {
-        try {
-          this.linkAudio();
-        } catch(e) {
-          this.trigger('error', ERRORS.AUDIO_NOT_SUPPORTED);
-        }
-      }
+		var success = function success(stream) {
+			//console.log('sucess!');
+			this.stream = stream;
+			this.createVideo();
 
-      this.element.appendChild(this.video);
-      this.video.play();
+			if (navigator.mozGetUserMedia) {
+				this.video.mozSrcObject = stream;
+			} else {
+				this.video.src = this.getStreamUrl();
+			}
 
-      this.trigger('success');
-    }.bind(this);
+			if (this.options.audio === true) {
+				try {
+					this.linkAudio();
+				} catch (e) {
+					this.trigger('error', ERRORS.AUDIO_NOT_SUPPORTED);
+				}
+			}
 
-    /* error is also called when someone denies access */
-    var error = function error(error) {
-    console.log('access denied');
-      this.trigger('error', error);
-    }.bind(this);
-    
-    console.log('Getting user media...');
+			this.element.appendChild(this.video);
+			this.video.play();
 
-    return navigator.getUserMedia({ video: {
-        optional: [{
-            sourceId: this.options.videoSource
-          }]
-        }, audio: this.options.audio }, success, error);
-  };
+			this.trigger('success');
+		}.bind(this);
 
-  SayCheese.prototype.stop = function stop() {
-    this.stream.stop();
+		/* error is also called when someone denies access */
+		var error = function error(error) {
+			//console.log('access denied');
+			this.trigger('error', error);
+		}.bind(this);
 
-    if (window.URL && window.URL.revokeObjectURL) {
-      window.URL.revokeObjectURL(this.video.src);
-    }
+		//console.log('Getting user media...');
 
-    return this.trigger('stop');
-  };
+		return navigator.getUserMedia({video: {
+				optional: [{
+						sourceId: this.options.videoSource
+					}]
+			}, audio: this.options.audio}, success, error);
+	};
 
-  return SayCheese;
+	SayCheese.prototype.stop = function stop() {
+		this.stream.stop();
+
+		if (window.URL && window.URL.revokeObjectURL) {
+			window.URL.revokeObjectURL(this.video.src);
+		}
+
+		return this.trigger('stop');
+	};
+
+	return SayCheese;
 
 })();
 
