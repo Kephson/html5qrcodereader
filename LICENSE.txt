@@ -1,3 +1,5 @@
+Actual version: 1.0.1
+
 Please visit the licences of these plugins here:
 - jQuery: http://jquery.com/
 - Photobooth.js: http://wolframhempel.github.io/photobooth-js/
