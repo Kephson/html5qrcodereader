@@ -1,22 +1,20 @@
+$(document).ready(function () {
 
-$(document).ready(function() {
+	Webcam.attach('#example');
 
-	// for webcam support
-	$('#example').photobooth().on("image", function(event, dataUrl) {
-		//$("#hiddenImg").html('<img src="' + dataUrl + '" >');
-		qrCodeDecoder(dataUrl);
-		//console.log(event);
-		//console.log(dataUrl);
-		//console.log($('#example').data( "photobooth" ));
+	$('#button').click(function () {
+		take_snapshot();
 	});
 
-	$('#button').click(function() {
-		$('.trigger').trigger('click');
-	});
-	
 	qrcode.callback = showInfo;
 
 });
+
+function take_snapshot() {
+	Webcam.snap(function (dataUrl) {
+		qrCodeDecoder(dataUrl);
+	});
+}
 
 // decode the img
 function qrCodeDecoder(dataUrl) {
